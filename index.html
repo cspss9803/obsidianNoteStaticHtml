@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebAuthn Test</title>
+</head>
+<body>
+    <h1>WebAuthn Test Page</h1>
+    <button id="register">Register</button>
+
+    <script>
+
+        // 長度為 32 的無符號 8 位元整數陣列
+        const challenge = new Uint8Array(32);
+
+        // 生成隨機數來填充這個陣列
+        window.crypto.getRandomValues(challenge);
+
+        // base64 編碼的用戶ID
+        const userID = 'Y3R0YW4=';
+
+        // ASCII-to-Binary 把 base64 解碼
+        const userIDBinary = window.atob(userID);
+
+        // 轉成 WebAuthn 要求的 Uint8Array 格式
+        const id = Uint8Array.from( userIDBinary, 
+            // 將字串中的每個字符轉換為對應的 Unicode 編碼
+            ( c ) => { // c 代表每個字元
+                c.charCodeAt(0) // 返回字元的 Unicode 編碼
+            }
+        );
+
+        // 用來創建 WebAuthn 憑證的選項物件
+        const publicKeyCredentialCreationOptions = {
+
+            // 隨機挑戰碼
+            challenge: challenge,
+
+            // 伺服器方的相關資訊
+            rp: {
+                // 伺服器方的名稱，用來顯示給用戶端
+                name: "github",
+
+                // 伺服器方的域名 ID，如果移除，瀏覽器會預設使用當前網域
+                // id: "localhost",
+            },
+
+            user: {
+                id: id, // 用戶的唯一 ID，表示該用戶在系統中的唯一標識
+                name: "Cttan", // 用戶名（通常是用來識別用戶的登入名稱）
+                displayName: "Cttan", // 要顯示給用戶的名稱，通常會顯示在 UI 上
+            },
+
+            // 指定支持的加密演算法類型，用來生成公私鑰對
+            pubKeyCredParams: [
+                {alg: -7, type: "public-key"},   // ES256
+                {alg: -257, type: "public-key"}  // RS256
+            ],
+
+            // 設定驗證器（Authenticator）的選擇方式
+            authenticatorSelection: {
+                // 使用「平台驗證器」，也就是內建在設備上的驗證器
+                authenticatorAttachment: "platform",
+            },
+
+            // 超時 60 秒，請求將失敗
+            timeout: 60000,
+
+            // 驗證模式
+            attestation: "indirect"
+        };
+
+        async function registerCredential() {
+            try {
+                const credential = await navigator.credentials.create({
+                    publicKey: publicKeyCredentialCreationOptions
+                });
+                console.log('Credential created:', credential);
+            } catch (err) {
+                console.error('Error during registration:', err);
+            }
+        }
+
+        document.getElementById('register').addEventListener('click', registerCredential);
+    </script>
+</body>
+</html>
