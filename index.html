@@ -395,7 +395,7 @@
                     challenge: challengeFromServer, // (必填)伺服器提供的挑戰碼
                     rp: { // (必填)伺服器方的相關資訊
                         name: "webAuthn Learn", // (必填)伺服器方的名稱
-                        id: "localhost", // (選填)伺服器方的域名，如果不填寫，瀏覽器會使用當前網域
+                        //id: "cspss9803.github.io", // (選填)伺服器方的域名，如果不填寫，瀏覽器會使用當前網域
                     },
                     user: {
                         id: userID, // (必填)用戶的唯一 ID，表示該用戶在系統中的唯一標識
@@ -420,7 +420,7 @@
                         // }
                     ],
                     extensions: { // 額外設定
-                        // appid: 'https://localhost', // 確保它只能用在這個網域上(兼容舊版的 FIDO U2F API)
+                        // appid: 'https://cspss9803.github.io', // 確保它只能用在這個網域上(兼容舊版的 FIDO U2F API)
                         credProps: true,            // 是否要求驗證器返回憑證屬性(只有在創建憑證時才會用到)
                         hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
                         minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
@@ -470,12 +470,12 @@
                         transports: ['ble', 'hybrid', 'internal','nfc', 'usb'], // 傳輸方式: ble藍芽、hybrid混合傳輸、 internal內部傳輸、nfc近場通訊、usb隨身碟
                     }],
                     extensions: { // 身份驗證請求時所需的擴展功能，以下四個選項都是各自獨立，之間沒有關係，
-                        appid: 'https://localhost', // 確保它只能用在這個網域上(用來兼容舊版的 FIDO U2F API)
+                        // appid: 'https://cspss9803.github.io', // 確保它只能用在這個網域上(用來兼容舊版的 FIDO U2F API)
                         // credProps: true,            // 是否要求驗證器返回憑證屬性( 這只有在創建憑證時才會用到)
                         hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
                         minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
                     },
-                    rpId: "localhost", // 伺服器的網域
+                    rpId: cspss9803.github.io", // 伺服器的網域
                     timeout: 60000,
                     userVerification: 'required', // 'required'必須驗證、'preferred'建議驗證，但不強制、'discouraged'不推薦驗證
                 }
