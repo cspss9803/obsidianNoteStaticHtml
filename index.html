@@ -164,19 +164,26 @@
             return base64Url;
         }
 
-        // 把 ECDSA 格式的簽名 轉換成 ASN.1 DER 格式的簽名
         function ECDSA_to_ASN1(signature) {
+
             // 解析 ASN.1 DER 格式的簽名，獲取兩個整數 (r 和 s)
             const rLen = signature[3];  // r 的長度在索引 3 處
-            const r = signature.slice(4, 4 + rLen);  // r 值從索引 4 開始
+            let r = signature.slice(4, 4 + rLen);  // r 值從索引 4 開始
+
             const sLen = signature[4 + rLen + 1];  // s 的長度在 r 後面的索引處
-            const s = signature.slice(4 + rLen + 2);  // s 值在 r 後面的索引處
+            let s = signature.slice(4 + rLen + 2, 4 + rLen + 2 + sLen);  // s 值在 r 後面的索引處
+
+            // 去掉 r 和 s 的前導 0x00（如果存在）
+            if (r[0] === 0x00) {
+                r = r.slice(1);
+            }
+            if (s[0] === 0x00) {
+                s = s.slice(1);
+            }
 
             // 確認 r 和 s 都是 32 字節，否則進行補位處理
-            const rPadded = r.length === 32 ? r : new Uint8Array([0, ...r]);  // r 不足 32 字節補 0
-            const sPadded = s.length === 32 ? s : new Uint8Array([0, ...s]);  // s 不足 32 字節補 0
-
-            // 將 r 和 s 連接成 Web Crypto API 需要的格式
+            const rPadded = r.length === 32 ? r : new Uint8Array(32 - r.length).fill(0).concat(Array.from(r));
+            const sPadded = s.length === 32 ? s : new Uint8Array(32 - s.length).fill(0).concat(Array.from(s));
             return new Uint8Array([...rPadded, ...sPadded]);
         }
 
@@ -395,7 +402,7 @@
                     challenge: challengeFromServer, // (必填)伺服器提供的挑戰碼
                     rp: { // (必填)伺服器方的相關資訊
                         name: "webAuthn Learn", // (必填)伺服器方的名稱
-                        //id: "cspss9803.github.io", // (選填)伺服器方的域名，如果不填寫，瀏覽器會使用當前網域
+                        // id: "localhost", // (選填)伺服器方的域名，如果不填寫，瀏覽器會使用當前網域
                     },
                     user: {
                         id: userID, // (必填)用戶的唯一 ID，表示該用戶在系統中的唯一標識
@@ -420,7 +427,7 @@
                         // }
                     ],
                     extensions: { // 額外設定
-                        // appid: 'https://cspss9803.github.io', // 確保它只能用在這個網域上(兼容舊版的 FIDO U2F API)
+                        // appid: 'https://localhost', // 確保它只能用在這個網域上(兼容舊版的 FIDO U2F API)
                         credProps: true,            // 是否要求驗證器返回憑證屬性(只有在創建憑證時才會用到)
                         hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
                         minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
@@ -470,12 +477,12 @@
                         transports: ['ble', 'hybrid', 'internal','nfc', 'usb'], // 傳輸方式: ble藍芽、hybrid混合傳輸、 internal內部傳輸、nfc近場通訊、usb隨身碟
                     }],
                     extensions: { // 身份驗證請求時所需的擴展功能，以下四個選項都是各自獨立，之間沒有關係，
-                        // appid: 'https://cspss9803.github.io', // 確保它只能用在這個網域上(用來兼容舊版的 FIDO U2F API)
+                        // appid: 'https://localhost', // 確保它只能用在這個網域上(用來兼容舊版的 FIDO U2F API)
                         // credProps: true,            // 是否要求驗證器返回憑證屬性( 這只有在創建憑證時才會用到)
                         hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
                         minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
                     },
-                    rpId: "cspss9803.github.io", // 伺服器的網域
+                    // rpId: "localhost", // 伺服器的網域
                     timeout: 60000,
                     userVerification: 'required', // 'required'必須驗證、'preferred'建議驗證，但不強制、'discouraged'不推薦驗證
                 }
