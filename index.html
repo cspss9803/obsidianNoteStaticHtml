@@ -1,88 +1,588 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh_TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <script src="https://cdn.jsdelivr.net/npm/cbor-js@0.1.0/cbor.min.js"></script> -->
+     
+    <!-- cbor.min.js 離線版 -->
+    <script>!function(e,D){"use strict";var V=Math.pow(2,-24),F=Math.pow(2,32),w=Math.pow(2,53);var r={encode:function(e){var f,a=new ArrayBuffer(256),o=new DataView(a),s=0;function c(e){for(var r=a.byteLength,t=s+e;r<t;)r*=2;if(r!==a.byteLength){var n=o;a=new ArrayBuffer(r),o=new DataView(a);for(var i=s+3>>2,u=0;u<i;++u)o.setUint32(4*u,n.getUint32(4*u))}return f=e,o}function h(){s+=f}function l(e){h(c(1).setUint8(s,e))}function v(e){for(var r=c(e.length),t=0;t<e.length;++t)r.setUint8(s+t,e[t]);h()}function g(e,r){var t,n,i,u,f,a;r<24?l(e<<5|r):r<256?(l(e<<5|24),l(r)):r<65536?(l(e<<5|25),a=r,h(c(2).setUint16(s,a))):r<4294967296?(l(e<<5|26),f=r,h(c(4).setUint32(s,f))):(l(e<<5|27),i=((t=r)-(n=t%F))/F,(u=c(8)).setUint32(s,i),u.setUint32(s+4,n),h())}if(function e(r){var t,n;if(!1===r)return l(244);if(!0===r)return l(245);if(null===r)return l(246);if(r===D)return l(247);switch(typeof r){case"number":if(Math.floor(r)===r){if(0<=r&&r<=w)return g(0,r);if(-w<=r&&r<0)return g(1,-(r+1))}return l(251),n=r,void h(c(8).setFloat64(s,n));case"string":var i=[];for(t=0;t<r.length;++t){var u=r.charCodeAt(t);u<128?i.push(u):(u<2048?i.push(192|u>>6):(u<55296?i.push(224|u>>12):(u=(1023&u)<<10,u|=1023&r.charCodeAt(++t),u+=65536,i.push(240|u>>18),i.push(128|u>>12&63)),i.push(128|u>>6&63)),i.push(128|63&u))}return g(3,i.length),v(i);default:var f;if(Array.isArray(r))for(g(4,f=r.length),t=0;t<f;++t)e(r[t]);else if(r instanceof Uint8Array)g(2,r.length),v(r);else{var a=Object.keys(r);for(g(5,f=a.length),t=0;t<f;++t){var o=a[t];e(o),e(r[o])}}}}(e),"slice"in a)return a.slice(0,s);for(var r=new ArrayBuffer(s),t=new DataView(r),n=0;n<s;++n)t.setUint8(n,o.getUint8(n));return r},decode:function(r,v,g){var w=new DataView(r),p=0;function d(e,r){return p+=r,e}function y(e){return d(new Uint8Array(r,p,e),e)}function U(){return d(w.getUint8(p),1)}function A(){return d(w.getUint16(p),2)}function t(){return d(w.getUint32(p),4)}function b(){return 255===w.getUint8(p)&&(p+=1,!0)}function m(e){if(e<24)return e;if(24===e)return U();if(25===e)return A();if(26===e)return t();if(27===e)return t()*F+t();if(31===e)return-1;throw"Invalid length encoding"}function B(e){var r=U();if(255===r)return-1;var t=m(31&r);if(t<0||r>>5!==e)throw"Invalid indefinite length element";return t}function C(e,r){for(var t=0;t<r;++t){var n=U();128&n&&(n<224?(n=(31&n)<<6|63&U(),r-=1):n<240?(n=(15&n)<<12|(63&U())<<6|63&U(),r-=2):(n=(15&n)<<18|(63&U())<<12|(63&U())<<6|63&U(),r-=3)),n<65536?e.push(n):(n-=65536,e.push(55296|n>>10),e.push(56320|1023&n))}}"function"!=typeof v&&(v=function(e){return e}),"function"!=typeof g&&(g=function(){return D});var e=function e(){var r,t,n=U(),i=n>>5,u=31&n;if(7===i)switch(u){case 25:return function(){var e=new ArrayBuffer(4),r=new DataView(e),t=A(),n=32768&t,i=31744&t,u=1023&t;if(31744===i)i=261120;else if(0!==i)i+=114688;else if(0!==u)return u*V;return r.setUint32(0,n<<16|i<<13|u<<13),r.getFloat32(0)}();case 26:return d(w.getFloat32(p),4);case 27:return d(w.getFloat64(p),8)}if((t=m(u))<0&&(i<2||6<i))throw"Invalid length";switch(i){case 0:return t;case 1:return-1-t;case 2:if(t<0){for(var f=[],a=0;0<=(t=B(i));)a+=t,f.push(y(t));var o=new Uint8Array(a),s=0;for(r=0;r<f.length;++r)o.set(f[r],s),s+=f[r].length;return o}return y(t);case 3:var c=[];if(t<0)for(;0<=(t=B(i));)C(c,t);else C(c,t);return String.fromCharCode.apply(null,c);case 4:var h;if(t<0)for(h=[];!b();)h.push(e());else for(h=new Array(t),r=0;r<t;++r)h[r]=e();return h;case 5:var l={};for(r=0;r<t||t<0&&!b();++r)l[e()]=e();return l;case 6:return v(e(),t);case 7:switch(t){case 20:return!1;case 21:return!0;case 22:return null;case 23:return D;default:return g(t)}}}();if(p!==r.byteLength)throw"Remaining bytes";return e}};"function"==typeof define&&define.amd?define("cbor/cbor",r):"undefined"!=typeof module&&module.exports?module.exports=r:e.CBOR||(e.CBOR=r)}(this);</script>
+    <style>
+        * { margin: 0; padding: 0; position: relative; box-sizing: border-box; font-family: '微軟正黑體'; }
+        main { perspective: 1000px; display: flex; justify-content: center; }
+        main > section { 
+            width: 350px;
+            height: 225px;
+            transform-style: preserve-3d; 
+            transition: transform .6s; 
+        }
+        main > section.flipped { transform: rotateY(180deg); }
+        form {
+            width: 100%;
+            height: 100%;
+            border: 1px solid #ccc;
+            padding: 1rem;
+            backface-visibility: hidden;
+            position: absolute;
+            border-radius: 5px;
+            box-shadow: 0 0 15px #ccc;
+        }
+        form.front { transform: rotateY(0deg); }
+        form.back { transform: rotateY(180deg); }
+        form h3 { text-align: center; }
+        form > div {
+            width: 80%;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: 1rem;
+        }
+        form > div > label {
+            position: absolute;
+            left: .5rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.8rem;
+            background: #fff;
+            padding: 0 5px;
+            user-select: none;
+            cursor: text;
+            transition: top .25s;
+        }
+        .labelUp { top: 0; }
+        form > div > input {
+            width: 100%;
+            height: 35px;
+            padding-left: .5rem;
+            border: 1px solid #ccc;
+            outline: none;
+        }
+        form > div > button {
+            width: 80%;
+            height: 35px;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            border-radius: 5px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: background-color .25s;
+            margin-bottom: 1rem;
+        }
+        form#register > div > button { background-color: #1671d3; }
+        form#register > div > button:hover { background-color: #007bff; }
+        form#login > div > button { background-color: #da4040; }
+        form#login > div > button:hover { background-color: #e20000; }
+        form > div > button:disabled { background-color: #ccc; cursor: not-allowed; }
+
+        .btn_switch { width: 80%; height: 35px; left: 50%; transform: translateX(-50%); transition: background-color .25s; color: #fff; display: flex; justify-content: center; align-items: center; border-radius: 5px; cursor: pointer; font-size: 0.8rem; user-select: none; }
+        form > div > .btn_switch { background-color: #5e5e5e; }
+        form > div > .btn_switch:hover { background-color: #1f1f1f; }
+
+        h1 { text-align: center; margin-top: 2rem; }
+        #cover { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: #0000005c; display: flex; justify-content: center; align-items: center; }
+        #message_box { width: 300px; padding: 1rem 2rem 2rem; background-color: #fff; border-radius: 5px; }
+        #message_box > h3 { text-align: center; }
+        #message_box > p { text-align: center; margin: 1rem 0; }
+        #message_box > button { width: 120px; height: 35px; left: 50%; transform: translateX(-50%); background-color: #999; border: 0; color: #fff; border-radius: 5px; cursor: pointer; }
+        #message_box > button:hover { background-color: #555; }
+    </style>
     <title>WebAuthn Test</title>
 </head>
 <body>
-    <h1>WebAuthn Test Page</h1>
-    <button id="register">Register</button>
+    <h1>WebAuthn 測試</h1>
+    <h1 id="message"></h1>
 
+    <main>
+        <section>
+            <form id="register" class="front">
+                <h3>進行無密碼註冊</h3>
+                <div>
+                    <input type="text" id="input_register" autocomplete="off">
+                    <label for="input_register">帳號</label>
+                </div>
+                <div>
+                    <button id="btn_register" type="submit">註冊</button>
+                    <div id="btn_go_to_login" class="btn_switch">已經註冊，前往登入</div>
+                </div>
+            </form>
+            <form id="login" class="back">
+                <h3>進行無密碼登入</h3>
+                <div>
+                    <input type="text" id="input_login" autocomplete="off">
+                    <label for="input_login">帳號</label>
+                </div>
+                <div>
+                    <button id="btn_register" type="submit">登入</button>
+                    <div id="btn_go_to_register" class="btn_switch">沒有帳號，前往註冊</div>
+                </div>
+            </form>
+        </section>
+    </main>
+    <div id="cover" status="none" style="display: none;">
+        <div id="message_box">
+            <h3>訊息</h3>
+            <p>註冊成功!</p>
+            <button id="btn_close">關閉</button>
+        </div>
+    </div>
     <script>
+        
+        // 把 Base64URL 格式 轉換成 Uint8Array 格式
+        function base64UrlToUint8Array( base64Url ) {
+            // 將 Base64URL 編碼轉換為 Base64 編碼
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
 
-        // 長度為 32 的無符號 8 位元整數陣列
-        const challenge = new Uint8Array(32);
+            // 計算解碼所需的 padding
+            const padding = base64.length % 4 === 0 ? 0 : 4 - (base64.length % 4);
+            const base64WithPadding = base64 + '='.repeat(padding);
 
-        // 生成隨機數來填充這個陣列
-        window.crypto.getRandomValues(challenge);
-
-        // base64 編碼的用戶ID
-        const userID = 'Y3R0YW4=';
-
-        // ASCII-to-Binary 把 base64 解碼
-        const userIDBinary = window.atob(userID);
-
-        // 轉成 WebAuthn 要求的 Uint8Array 格式
-        const id = Uint8Array.from( userIDBinary, 
-            // 將字串中的每個字符轉換為對應的 Unicode 編碼
-            ( c ) => { // c 代表每個字元
-                c.charCodeAt(0) // 返回字元的 Unicode 編碼
+            // 將 Base64 編碼轉換為 Uint8Array
+            const binaryString = window.atob(base64WithPadding);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
             }
-        );
 
-        // 用來創建 WebAuthn 憑證的選項物件
-        const publicKeyCredentialCreationOptions = {
+            return bytes;
+        }
 
-            // 隨機挑戰碼
-            challenge: challenge,
+        // 把 Uint8Array 格式 轉換成 Base64URL 格式
+        function uint8ArrayToBase64Url( uint8Array ) {
+            // 將 Uint8Array 轉換為二進位字串
+            let binaryString = '';
+            for (let i = 0; i < uint8Array.length; i++) {
+                binaryString += String.fromCharCode(uint8Array[i]);
+            }
 
-            // 伺服器方的相關資訊
-            rp: {
-                // 伺服器方的名稱，用來顯示給用戶端
-                name: "github",
+            // 使用「Binary-to-ASCII ⇒ btoa」將二進位字串轉換為 Base64
+            const base64 = window.btoa(binaryString);
 
-                // 伺服器方的域名 ID，如果移除，瀏覽器會預設使用當前網域
-                // id: "localhost",
+            // 將 Base64 編碼轉換為 Base64URL 編碼
+            const base64Url = base64.replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+
+            return base64Url;
+        }
+
+        // 把 ECDSA 格式的簽名 轉換成 ASN.1 DER 格式的簽名
+        function ECDSA_to_ASN1(signature) {
+            // 解析 ASN.1 DER 格式的簽名，獲取兩個整數 (r 和 s)
+            const rLen = signature[3];  // r 的長度在索引 3 處
+            const r = signature.slice(4, 4 + rLen);  // r 值從索引 4 開始
+            const sLen = signature[4 + rLen + 1];  // s 的長度在 r 後面的索引處
+            const s = signature.slice(4 + rLen + 2);  // s 值在 r 後面的索引處
+
+            // 確認 r 和 s 都是 32 字節，否則進行補位處理
+            const rPadded = r.length === 32 ? r : new Uint8Array([0, ...r]);  // r 不足 32 字節補 0
+            const sPadded = s.length === 32 ? s : new Uint8Array([0, ...s]);  // s 不足 32 字節補 0
+
+            // 將 r 和 s 連接成 Web Crypto API 需要的格式
+            return new Uint8Array([...rPadded, ...sPadded]);
+        }
+
+    </script>
+    <script>
+        const server = {
+
+            createCredentialRequire: function( userName ){
+                return new Promise((resolve, reject) => {
+                    setTimeout(function(){
+                        if( true ) {
+                            const challenge = window.crypto.getRandomValues( new Uint8Array(32) );
+                            if(!server[userName]) { server[userName] = {} }
+                            server[userName].registerChallenge = challenge;
+                            resolve( challenge );
+                        } else {
+                            reject('error');
+                        }
+                        
+                    }, 10);
+                })
+            },
+            
+            getCreateCredentialChallenge: function( userName ){
+                return new Promise((resolve, reject) => {
+                    setTimeout(function(){
+                        if( true ) {
+                            resolve(server[userName].registerChallenge);
+                        } else {
+                            reject('error');
+                        }
+                        
+                    }, 10);
+                })
             },
 
-            user: {
-                id: id, // 用戶的唯一 ID，表示該用戶在系統中的唯一標識
-                name: "Cttan", // 用戶名（通常是用來識別用戶的登入名稱）
-                displayName: "Cttan", // 要顯示給用戶的名稱，通常會顯示在 UI 上
+            verifyRegisterCredential: async function( registerCredential, userName ){
+
+                // WebAuthn的憑證
+                const credential = registerCredential;
+
+                // 解碼後取得「驗證聲明」
+                const attestation = CBOR.decode( credential.response.attestationObject );
+                const authData = attestation.authData;
+                console.log('驗證聲明: ', attestation);
+
+                // 取得「憑證ID的長度」
+                const dataView = new DataView(new ArrayBuffer(2));
+                const idLenBytes = authData.slice(53, 55);
+                idLenBytes.forEach((value, index) => dataView.setUint8(index, value));
+                const credentialIdLength = dataView.getUint16();
+                // const credentialIdLength = (authData[53] << 8) + authData[54]; // 效能更、程式碼簡潔，但可讀性差的選擇
+
+                // 取得「憑證ID」
+                const credentialId = authData.slice( 55, 55 + credentialIdLength);
+                console.log('憑證的ID: ', credentialId);
+
+                // 從驗證資料中，取得位元組型態的公鑰
+                const publicKeyBytes = authData.slice( 55 + credentialIdLength);
+                console.log('位元組型態的公鑰: ', publicKeyBytes);
+
+                // 再次使用 CBOR 將 位元組型態的公鑰 進行解碼
+                const publicKeyObject = CBOR.decode(publicKeyBytes.buffer);
+                console.log('物件型態的公鑰: ', publicKeyObject);
+                console.log('公鑰的類型: ', publicKeyObject['1'], '(值 2 代表公鑰使用了 EC2 橢圓曲線密碼學)');
+                console.log('簽名演算法: ', publicKeyObject['3'], '(值 -7 代表公鑰使用了 ES256 作為簽名演算法)');
+                console.log('曲線的類型: ', publicKeyObject['-1'], '(值 1 表示公鑰使用的是 P-256 橢圓曲線)');
+                console.log('橢圓曲線點的 x 座標: ', publicKeyObject['-2']);
+                console.log('橢圓曲線點的 y 座標: ', publicKeyObject['-3']);
+
+                //---------------------------------------------------------------------------------------------------------
+
+                // 取得原本的挑戰碼
+                const challengeFromServer = await server.getCreateCredentialChallenge( userName );
+
+                // 從憑證中取得「用戶端資料」
+                const clientData = JSON.parse(new TextDecoder('utf-8').decode(credential.response.clientDataJSON));
+
+                // 把「挑戰碼」轉成 Uint8Array 以便於比對
+                const challengeFromCredential = base64UrlToUint8Array( clientData.challenge );
+
+                // 兩個挑戰碼的長度是否相同
+                const isLenEqual = challengeFromCredential.length === challengeFromServer.length;
+
+                // 兩個挑戰碼的內容是否相同
+                const isElmEqual = challengeFromCredential.every((value, index) => value === challengeFromServer[index]);
+
+                // 比對「憑證上的挑戰碼」是否與「原本的挑戰碼」相同
+                if( isLenEqual && isElmEqual ) { 
+                    console.log('「憑證上的挑戰碼」與「原本的挑戰碼」完全相同: 驗證通過!'); 
+                    server[userName].credentialID = credentialId;
+                    server[userName].publicKeyObject = publicKeyObject;
+                    return true;
+
+                } else { 
+                    console.error('「憑證上的挑戰碼」與「原本的挑戰碼」並不相同: 驗證失敗!'); 
+                    return false;
+                }
             },
 
-            // 指定支持的加密演算法類型，用來生成公私鑰對
-            pubKeyCredParams: [
-                {alg: -7, type: "public-key"},   // ES256
-                {alg: -257, type: "public-key"}  // RS256
-            ],
-
-            // 設定驗證器（Authenticator）的選擇方式
-            authenticatorSelection: {
-                // 使用「平台驗證器」，也就是內建在設備上的驗證器
-                authenticatorAttachment: "platform",
+            loginRequire: function( userName ){
+                return new Promise((resolve, reject) => {
+                    setTimeout(function(){
+                        if( server[userName]?.credentialID ) {
+                            const challenge = window.crypto.getRandomValues( new Uint8Array(32) );
+                            if(!server[userName]) { server[userName] = {} }
+                            server[userName].loginChallenge = challenge;
+                            resolve({
+                                credentialID: server[userName].credentialID,
+                                challengeFromServer: challenge
+                            });
+                        } else {
+                            reject({error: "該帳號不存在", code: 1});
+                        }
+                        
+                    }, 10);
+                })
             },
 
-            // 超時 60 秒，請求將失敗
-            timeout: 60000,
+            getUserPublicKey: function( userName ){
+                return new Promise((resolve, reject) => {
+                    setTimeout(function(){
+                        if( server[userName]?.publicKeyObject ) {
+                            resolve( server[userName].publicKeyObject );
+                        } else {
+                            reject({error: "該帳號不存在", code: 1});
+                        }
+                        
+                    }, 10);
+                })
+            },
 
-            // 驗證模式
-            attestation: "indirect"
+            verifyLoginAssertion: async function( LoginAssertion, userName ){
+
+                try{
+                    // 取得驗證器傳來的 憑證聲明
+                    const assertion = LoginAssertion;
+
+                    // 取得驗證器資料，並轉換為 Uint8Array 格式
+                    const authenticatorDataUint8Array = new Uint8Array(assertion.response.authenticatorData);
+
+                    // 取得用戶資料，並轉換為 Uint8Array 格式
+                    const clientDataJSONUint8Array = new Uint8Array(assertion.response.clientDataJSON);
+
+                    // 取得簽名資料，並轉換為 Uint8Array 格式
+                    const signatureUint8Array = new Uint8Array(assertion.response.signature);
+
+                    // 將 Uint8Array 格式的 用戶資料 解碼成物件
+                    const clientData = JSON.parse(new TextDecoder('utf-8').decode(clientDataJSONUint8Array));
+
+                    //將 Uint8Array 格式的 用戶資料 使用 SHA-256 進行雜湊
+                    const clientDataHash = await crypto.subtle.digest('SHA-256', clientDataJSONUint8Array);
+
+                    // 合併起來，就得到「要驗證的資料」
+                    const dataToVerify = new Uint8Array([...authenticatorDataUint8Array, ...new Uint8Array(clientDataHash)]);
+
+                    // 取得該使用者的公鑰
+                    const publicKeyObject = await server.getUserPublicKey( userName );
+
+                    // 把公鑰改成 crypto 接受的 JWK 格式
+                    const publicKeyJwk = {
+                        kty: 'EC',  // Key Type: EC (橢圓曲線加密)
+                        crv: 'P-256',  // 曲線類型：P-256
+                        x: uint8ArrayToBase64Url(publicKeyObject['-2']),
+                        y: uint8ArrayToBase64Url(publicKeyObject['-3']),
+                        ext: true,  // 允許使用擴展
+                        key_ops: ['verify'],  // 金鑰操作：用於驗證
+                        alg: 'ES256'  // 演算法：ES256
+                    };
+
+                    // 可以用 crypto 來進行簽名驗證的公鑰
+                    const publicKeyCrypto = await crypto.subtle.importKey(
+                        'jwk',
+                        publicKeyJwk,
+                        { name: 'ECDSA', namedCurve: 'P-256' },
+                        true,
+                        ['verify']
+                    );
+
+                    // 把 ECDSA 格式的簽名 轉換成 ASN.1 DER 格式的簽名，這樣 crypto 才能做驗證
+                    const signature = ECDSA_to_ASN1( signatureUint8Array );
+
+                    // crypto 利用公鑰與驗證資料來驗證簽名
+                    const isValid = await crypto.subtle.verify(
+                        { name: 'ECDSA', hash: { name: 'SHA-256' } },
+                        publicKeyCrypto,
+                        signature,
+                        dataToVerify
+                    );
+
+                    console.log('Signature valid: ', isValid);
+
+                    return isValid;
+                } 
+                catch( error ){
+                    return error;
+                }
+
+            },
+        
         };
 
         async function registerCredential() {
             try {
+
+                const userName = await document.querySelector('#input_register').value;
+                
+                // 生成隨機數來填充這個「長度為 32 的無符號 8 位元整數陣列」
+                const challengeFromServer = await server.createCredentialRequire(userName);
+
+                // 「base64字串」使用「atob」還原得到「原始文字」，最後再做成 WebAuthn 要求的 Uint8Array 陣列
+                const userID = Uint8Array.from( userName, c => c.charCodeAt(0) );
+                
+                // 用來創建 WebAuthn 憑證的物件
+                const publicKeyCredentialCreationOptions = { 
+                    challenge: challengeFromServer, // (必填)伺服器提供的挑戰碼
+                    rp: { // (必填)伺服器方的相關資訊
+                        name: "webAuthn Learn", // (必填)伺服器方的名稱
+                        id: "localhost", // (選填)伺服器方的域名，如果不填寫，瀏覽器會使用當前網域
+                    },
+                    user: {
+                        id: userID, // (必填)用戶的唯一 ID，表示該用戶在系統中的唯一標識
+                        name: userName, // (必填)用戶名
+                        displayName: userName, // (必填)要顯示給用戶的名稱
+                    },
+                    pubKeyCredParams: [ // (必填)指定支持的加密演算法類型，用來生成公私鑰對
+                        {alg: -7, type: "public-key"},   // 編號 -7 代表 ES256 演算法
+                        {alg: -257, type: "public-key"}  // 編號 -257 代表 RS256 演算法
+                    ],
+                    authenticatorSelection: { // (選填)設定驗證器（Authenticator）的選擇方式
+                        authenticatorAttachment: "platform", // platform(設備中的驗證器: 指紋、WindowsHello) | cross-platform(外部驗證器: usb、藍芽設備...)
+                        requireResidentKey: true, // 驗證器是否必須要去儲存「常駐金鑰」
+                        residentKey: 'preferred', // discouraged(不要求去使用能儲存常駐金鑰的驗證器) | preferred(優先去使用能儲存常駐金鑰的驗證器，但不強制) | required(必須使用能儲存常駐金鑰的驗證器)
+                        userVerification: 'required', // discouraged(不要求用戶進行身份驗證) | preferred(優先要求用戶驗證，但不驗證也行) | required(強制要求用戶進行驗證)
+                    },
+                    excludeCredentials: [ // 不使用以下這些已經註冊過的憑證，來進行新的憑證創建( 可以避免同樣的憑證重複創建 )
+                        // { 
+                        //     id: new Uint8Array(), // 某個已註冊憑證的ID
+                        //     transports: ['ble', 'hybrid', 'internal', 'nfc', 'usb'], // 要排除哪些與驗證器通訊的傳輸方式
+                        //     type: 'public-key' // 憑證的類型，它就只能填 public-key 而已
+                        // }
+                    ],
+                    extensions: { // 額外設定
+                        // appid: 'https://localhost', // 確保它只能用在這個網域上(兼容舊版的 FIDO U2F API)
+                        credProps: true,            // 是否要求驗證器返回憑證屬性(只有在創建憑證時才會用到)
+                        hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
+                        minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
+                    },
+                    timeout: 60000, // 指定毫秒數之後，請求就會失敗
+                    attestation: "direct" // 要跟驗證器拿多少資訊? none(驗證器不會提供任何來源證明) | indirect(通過第三方驗證憑證來源，平衡隱私與信任) | direct(接提供來源證明，最大化信任但犧牲隱私) | enterprise(為企業級應用設計，允許在已知信任的設備上管理來源證明)
+                };
+                
                 const credential = await navigator.credentials.create({
-                    publicKey: publicKeyCredentialCreationOptions
+                    publicKey: publicKeyCredentialCreationOptions,
                 });
-                console.log('Credential created:', credential);
-            } catch (err) {
-                console.error('Error during registration:', err);
+
+                console.log('創建出來的憑證:', credential);
+
+                const isVaild = await server.verifyRegisterCredential( credential, userName );
+
+                const cover = document.querySelector('#cover');
+                const message_text = cover.querySelector('p')
+                if( isVaild ) {
+                    
+                    cover.setAttribute('status', 'register_success')
+                    message_text.textContent = '註冊成功!'
+                } else {
+                    cover.setAttribute('status', 'register_fail')
+                    message_text.textContent = '註冊失敗!'
+                }
+                cover.style.display = 'flex'
+
+            } 
+            catch (err) { console.error( err ); }
+        }
+        
+        async function login() {
+            try{
+                const userName = await document.querySelector('#input_login').value;
+
+                // 憑證ID 與 挑戰碼
+                const { credentialID, challengeFromServer } = await server.loginRequire( userName );
+
+                const publicKeyCredentialRequestOptions = {
+                    /*--- 以下都是必填項目 ----------------------------------------------------------------------------------------------*/
+                    challenge: challengeFromServer, // 挑戰碼
+                    /*--- 以下都是選填項目 ----------------------------------------------------------------------------------------------*/
+                    allowCredentials: [{ // 告訴瀏覽器: 伺服器希望使用者透過哪些方式進行身分驗證。
+                        id: credentialID, // 要指定驗證方式的憑證
+                        type: 'public-key',
+                        transports: ['ble', 'hybrid', 'internal','nfc', 'usb'], // 傳輸方式: ble藍芽、hybrid混合傳輸、 internal內部傳輸、nfc近場通訊、usb隨身碟
+                    }],
+                    extensions: { // 身份驗證請求時所需的擴展功能，以下四個選項都是各自獨立，之間沒有關係，
+                        appid: 'https://localhost', // 確保它只能用在這個網域上(用來兼容舊版的 FIDO U2F API)
+                        // credProps: true,            // 是否要求驗證器返回憑證屬性( 這只有在創建憑證時才會用到)
+                        hmacCreateSecret: true,     // 是否要求驗證器支援 HMAC 密鑰創建功能
+                        minPinLength: true,        // 是否要求認證器支援: 設定最小 PIN 長度
+                    },
+                    rpId: "localhost", // 伺服器的網域
+                    timeout: 60000,
+                    userVerification: 'required', // 'required'必須驗證、'preferred'建議驗證，但不強制、'discouraged'不推薦驗證
+                }
+
+                const assertion = await navigator.credentials.get({
+                    publicKey: publicKeyCredentialRequestOptions
+                });
+
+                const isVaild = await server.verifyLoginAssertion( assertion, userName );
+
+                const cover = document.querySelector('#cover');
+                const message_text = cover.querySelector('p')
+                if( isVaild ) {
+                    cover.setAttribute('status', 'login_success')
+                    message_text.textContent = '登入成功!'
+                } else {
+                    cover.setAttribute('status', 'login_fail')
+                    message_text.textContent = '登入失敗!'
+                }
+                cover.style.display = 'flex'
+
+            } catch( error ){
+
+                console.error(error);
+
+                if( error.code ===1 ) { 
+                    const cover = document.querySelector('#cover');
+                    const message_text = cover.querySelector('p')
+                    cover.setAttribute('status', 'account_not_found')
+                    message_text.textContent = '帳號不存在，請註冊!' 
+                    cover.style.display = 'flex'
+                }
             }
         }
 
-        document.getElementById('register').addEventListener('click', registerCredential);
+    </script>
+    <script>
+        document.querySelectorAll('input').forEach( input => {
+            input.addEventListener('focus', event => {
+                const label = event.target.parentNode.querySelector('label')
+                label.classList.add('labelUp')
+            })
+            input.addEventListener('blur', event => {
+                const label = event.target.parentNode.querySelector('label')
+                const isInputEmpty = input.value.length === 0
+                if( isInputEmpty ) { label.classList.remove('labelUp') }
+            })
+            input.addEventListener('input', event => { 
+                input.value = input.value.trim() 
+                const form = input.parentNode.parentNode
+                hideInputError(form, true)
+            })
+        })
+
+        document.querySelectorAll('form').forEach( form => {
+            form.addEventListener('submit', event => {
+                event.preventDefault()
+                const input = form.querySelector('input')
+                const label = form.querySelector('label')
+                const button = form.querySelector('button');
+
+                const isInputEmpty = input.value.length === 0
+                if( isInputEmpty ) { 
+                    hideInputError(form, false)
+                } else {
+                    if( form.id === 'register' ) { registerCredential() }
+                    if( form.id === 'login' ) { login() }
+                    hideInputError(form, true)
+                }
+            })
+        })
+
+        document.querySelector('#btn_go_to_login').addEventListener('click', event => {
+            document.querySelector('section').classList.add('flipped')
+        })
+        document.querySelector('#btn_go_to_register').addEventListener('click', event => {
+            document.querySelector('section').classList.remove('flipped')
+        })
+        document.querySelector('#btn_close').addEventListener('click', event => {
+            const cover = event.target.parentNode.parentNode;
+            const status = cover.getAttribute('status')
+            cover.style.display = 'none'
+            if( status === 'register_success' ) { 
+                document.querySelector('section').classList.add('flipped') 
+            }
+            else if( status === 'login_success' ) { 
+
+            }
+            else if( status === 'account_not_found' ) {
+                document.querySelector('section').classList.remove('flipped') 
+            }
+        })
+
+        function hideInputError(form, isHidden){
+            const input = form.querySelector('input')
+            const label = form.querySelector('label')
+            const button = form.querySelector('button');
+            if( isHidden ) {
+                input.style.border = '1px solid #ccc'
+                label.textContent = '帳號'
+                label.style.color = '#000'
+            } else {
+                input.style.border = '1px solid red'
+                label.textContent = '帳號格式不正確'
+                label.style.color = 'red'
+            }
+        }
     </script>
 </body>
 </html>
